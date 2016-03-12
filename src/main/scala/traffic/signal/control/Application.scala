@@ -25,8 +25,9 @@ object Application {
       if (args.length > 0) {
         if (args.head.toLowerCase() == "greentime-") args(1).toInt.seconds else 10.seconds
       } else 10.seconds
-      
-    val lightActor = mainActorSystem.actorOf(Props(new SignalControlerActor(greenTime)), "signalControllerActor_" + currentTimeMillis)
+
+    //Starting from South to North Direction    
+    val lightActor = mainActorSystem.actorOf(Props(new SignalControlerActor(greenTime, South2North)), "signalControllerActor_" + currentTimeMillis)
 
     lightActor ! Schedule
 

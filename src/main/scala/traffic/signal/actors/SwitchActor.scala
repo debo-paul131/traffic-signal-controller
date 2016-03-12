@@ -8,9 +8,9 @@ import traffic.signal.control.ExecutionContexts.actorExecutionContext
 class SwitchActor(lightActorRef: Option[ActorRef], delay: FiniteDuration) extends Actor {
 
   def receive = {
-    case ScheduleOnce => context.system.scheduler.scheduleOnce(delay, self, StartPhase)
+    case ScheduleOnce => context.system.scheduler.scheduleOnce(delay, self, SwitchPhase)
 
-    case StartPhase => lightActorRef.map { ref =>
+    case SwitchPhase => lightActorRef.map { ref =>
       ref ! LightUp
     }
   }

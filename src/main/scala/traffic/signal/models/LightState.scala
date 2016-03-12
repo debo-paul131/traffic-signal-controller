@@ -9,6 +9,10 @@ case object Light {
   val amber = "Amber".yellow
 }
 
+/**
+ * In total there are 12 signal elements . Each Signal element represent a direction of traffic
+ */
+
 trait LightState {
   val name: String
   def opposite: Option[LightState] = None
@@ -78,7 +82,6 @@ case object East2WestTransition extends LightState {
   val name = "Traffic from East "
   override val straight = Light.amber
 }
-
 
 /**
  * **************************Right traversing************************************

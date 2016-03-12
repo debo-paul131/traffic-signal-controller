@@ -12,5 +12,5 @@ trait Command extends Message
 
 case object Schedule extends Command
 case object LightUp extends Command
-case object StartPhase extends Command
+case object SwitchPhase extends Command
 case object ScheduleOnce extends Command

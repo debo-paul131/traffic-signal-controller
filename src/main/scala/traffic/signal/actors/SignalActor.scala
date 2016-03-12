@@ -24,24 +24,23 @@ class SignalActor(lightState: LightState) extends Actor {
       println("\n")
       println(" Time : ".onBlue + dateTimeFormat.print(DateTime.now))
 
-      signals += Utils.getColoredSignals(lightState)
-      lightState.opposite.map { oppositeLightState =>
+      for {
+        oppositeLightState <- lightState.opposite
+        blockLightState <- lightState.block
+        nextblockLightState <- blockLightState.opposite
+      } yield {
+        signals += Utils.getColoredSignals(lightState)
         signals += Utils.getColoredSignals(oppositeLightState)
-      }
-
-      lightState.block.map { blockLightState =>
         signals += Signal(blockLightState.name, blockLightState.left, Light.red, Light.red)
-        blockLightState.opposite.map { nextLightState =>
-          signals += Signal(nextLightState.name, nextLightState.left, Light.red, Light.red)
-        }
+        signals += Signal(nextblockLightState.name, nextblockLightState.left, Light.red, Light.red)
       }
 
       signals.sorted.map { signal =>
         self ! Log(signal)
       }
     }
-    case Log(signal: Signal) => {
+    case Log(signal: Signal) =>
       println(signal.route + "  " + signal.left + " | " + signal.straight + " | " + signal.right)
-    }
+
   }
 }
