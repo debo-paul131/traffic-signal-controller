@@ -10,15 +10,13 @@ import com.github.nscala_time.time.Imports.DateTime
 import traffic.signal.util._
 import pl.project13.scala.rainbow.Rainbow._
 import scala.collection.mutable._
+import scala.util.matching.Regex
 
 class SignalActor(lightState: LightState) extends Actor {
 
-  val signals = ListBuffer[Signal]()
-
   val dateTimeFormat = DateTimeFormat.forPattern("h:mm:ss aa")
-
-  implicit def orderingByRoutes[A <: Signal]: Ordering[A] = Ordering.by(_.route)
-
+  var signals = new Array[Signal](4)
+  
   def receive = {
     case LightUp => {
       println("\n")
@@ -29,13 +27,21 @@ class SignalActor(lightState: LightState) extends Actor {
         blockLightState <- lightState.block
         nextblockLightState <- blockLightState.opposite
       } yield {
-        signals += Utils.getColoredSignals(lightState)
-        signals += Utils.getColoredSignals(oppositeLightState)
-        signals += Signal(blockLightState.name, blockLightState.left, Light.red, Light.red)
-        signals += Signal(nextblockLightState.name, nextblockLightState.left, Light.red, Light.red)
+        signals = Array(Utils.getColoredSignals(lightState), Utils.getColoredSignals(oppositeLightState),
+          Signal(blockLightState.name, blockLightState.left, Light.red, Light.red),
+          Signal(nextblockLightState.name, nextblockLightState.left, Light.red, Light.red))
       }
 
-      signals.sorted.map { signal =>
+      signals.map { signal =>
+        new Regex("(East|North|South|West)").findFirstIn(signal.route) match {
+          case Some("North") => signals(0) = signal
+          case Some("East")  => signals(1) = signal
+          case Some("South") => signals(2) = signal
+          case _             => signals(3) = signal
+        }
+      }
+
+      signals.map { signal =>
         self ! Log(signal)
       }
     }
