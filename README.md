@@ -17,6 +17,10 @@ sbt "run greentime-  NUMBER-OF-SECONDS"
 
 Eg : If you want to give green signal an interval of 15 seconds , then sbt "run greentime- 15"
 
+## Build Eclipse project
+
+sbt eclipse
+
 ## Help
 
 sbt "run --help"
