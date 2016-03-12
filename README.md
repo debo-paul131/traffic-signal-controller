@@ -29,5 +29,5 @@ sbt eclipse
 
 sbt "run --help"
 
-## Referance
+## Reference
 https://www.youtube.com/watch?v=6yCbtgr7rSI
