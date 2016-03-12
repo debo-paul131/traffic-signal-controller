@@ -1,2 +1,0 @@
-package traffic.signal.light
-
