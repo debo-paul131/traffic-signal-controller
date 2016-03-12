@@ -15,7 +15,7 @@ sbt compile
 
 sbt "run greentime-  NUMBER-OF-SECONDS"
 
-Eg : If you want to give the green signal an interval to 15 seconds , use sbt "run greentime- 15"
+Eg : If you want to give green signal an interval of 15 seconds , then sbt "run greentime- 15"
 
 ## Help
 
