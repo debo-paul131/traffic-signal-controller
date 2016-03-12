@@ -20,7 +20,8 @@ object Application {
       println(helpString)
       System.exit(0)
     }
-
+    
+    //Default greentime is 10 seconds
     val greenTime: FiniteDuration =
       if (args.length > 0) {
         if (args.head.toLowerCase() == "greentime-") args(1).toInt.seconds else 10.seconds
