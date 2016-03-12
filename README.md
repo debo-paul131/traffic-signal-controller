@@ -4,9 +4,9 @@ The controller is designed to control traffic signal at a 2-way intersection of 
 
 ![alt tag](https://github.com/debo-paul131/traffic-signal-controller/blob/master/image%20/4PhaseSignaling.jpg)
 
-Considering the traffic going straight (north-south and east-west) to be double of the traffic that makes a turn. 
+Assuming the traffic going straight (north-south and east-west) to be double of the traffic that makes a turn i.e in other words time taken to clear the straight going traffic pool is more than turning traffic pool. 
 
-From the picture , p1 and p2 takes double the time compared to p3 and p4 . If p1 , p2 takes X time , then p3,p4 will take X/2 time . 
+From the picture , p1 and p2 are two phases which allows traversing of straight going traffic and left turning traffic and p3 and p4 phases allows traversing only right turing traffic. Though p1 and p2 allows both straight and left turning traffic , i am considering only the straight going iterval time for these phase . Therefore  p1 and p2 will take double the time compared to p3 and p4. Eg. If p1 , p2 takes X time , then p3,p4 will take X/2 time .
 
 
 ##Downloading, building
