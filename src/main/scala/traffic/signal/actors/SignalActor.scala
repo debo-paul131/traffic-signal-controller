@@ -16,28 +16,30 @@ class SignalActor(lightState: LightState) extends Actor {
 
   val dateTimeFormat = DateTimeFormat.forPattern("h:mm:ss aa")
   var signals = new Array[Signal](4)
-  
+
   def receive = {
     case LightUp => {
       println("\n")
       println(" Time : ".onBlue + dateTimeFormat.print(DateTime.now))
 
-      for {
+      val signalsArrayOpt = for {
         oppositeLightState <- lightState.opposite
         otherLightState <- lightState.other
         nextOtherLightState <- otherLightState.opposite
       } yield {
-        signals = Array(Utils.getColoredSignals(lightState), Utils.getColoredSignals(oppositeLightState),
+        Array(Utils.getColoredSignals(lightState), Utils.getColoredSignals(oppositeLightState),
           Signal(otherLightState.name, otherLightState.left, Light.red, Light.red),
           Signal(nextOtherLightState.name, nextOtherLightState.left, Light.red, Light.red))
       }
 
-      signals.map { signal =>
-        new Regex("(East|North|South|West)").findFirstIn(signal.route) match {
-          case Some("North") => signals(0) = signal
-          case Some("East")  => signals(1) = signal
-          case Some("South") => signals(2) = signal
-          case _             => signals(3) = signal
+      signalsArrayOpt.map {
+        _.map { signal =>
+          new Regex("(East|North|South|West)").findFirstIn(signal.route) match {
+            case Some("North") => signals(0) = signal
+            case Some("East")  => signals(1) = signal
+            case Some("South") => signals(2) = signal
+            case _             => signals(3) = signal
+          }
         }
       }
 
