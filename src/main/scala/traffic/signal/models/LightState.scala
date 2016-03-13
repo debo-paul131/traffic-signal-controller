@@ -11,13 +11,21 @@ case object Light {
 
 /**
  * In total there are 12 signal elements . Each Signal element represent a direction of traffic
+ * 
+ * @param name the phase
+ * @param opposite phase of the current phase
+ * @param next phase 
+ * @param other phase
+ * @param left turning signal
+ * @param straight turning signal
+ * @param right turning signal
  */
 
 trait LightState {
   val name: String
   def opposite: Option[LightState] = None
   def next: Option[LightState] = None
-  def block: Option[LightState] = None
+  def other: Option[LightState] = None
   def left: String = Light.red
   def straight: String = Light.red
   def right: String = Light.red
@@ -31,7 +39,7 @@ case object South2North extends LightState {
   val name = "Traffic from South"
   override val opposite = Some(North2South)
   override val next = Some(South2NorthTransition)
-  override val block = Some(South2West)
+  override val other = Some(South2West)
   override val straight = Light.green
 }
 
@@ -39,7 +47,7 @@ case object South2NorthTransition extends LightState {
   val name = "Traffic from South"
   override val opposite = Some(North2SouthTransition)
   override val next = Some(South2East)
-  override val block = Some(South2WestTransition)
+  override val other = Some(South2WestTransition)
   override val straight = Light.amber
 }
 
@@ -61,7 +69,7 @@ case object West2East extends LightState {
   val name = "Traffic from West "
   override val opposite = Some(East2West)
   override val next = Some(West2EastTransition)
-  override val block = Some(West2North)
+  override val other = Some(West2North)
   override val straight = Light.green
 }
 
@@ -69,7 +77,7 @@ case object West2EastTransition extends LightState {
   val name = "Traffic from West "
   override val opposite = Some(East2WestTransition)
   override val next = Some(West2South)
-  override val block = Some(West2NorthTransition)
+  override val other = Some(West2NorthTransition)
   override val straight = Light.amber
 }
 
@@ -91,7 +99,7 @@ case object South2East extends LightState {
   val name = "Traffic from South"
   override val opposite = Some(North2West) //W2E
   override val next = Some(South2EastTransition)
-  override val block = Some(West2South)
+  override val other = Some(West2South)
   override val right = Light.green
 }
 
@@ -99,7 +107,7 @@ case object South2EastTransition extends LightState {
   val name = "Traffic from South"
   override val opposite = Some(North2WestTransition) //W2E
   override val next = Some(West2East)
-  override val block = Some(West2South)
+  override val other = Some(West2South)
   override val right = Light.amber
 }
 
@@ -121,7 +129,7 @@ case object West2South extends LightState {
   val name = "Traffic from West "
   override val opposite = Some(East2North) //S2N
   override val next = Some(West2SouthTransition)
-  override val block = Some(South2East)
+  override val other = Some(South2East)
   override val right = Light.green
 }
 
@@ -129,7 +137,7 @@ case object West2SouthTransition extends LightState {
   val name = "Traffic from West "
   override val opposite = Some(East2NorthTransition) //S2N
   override val next = Some(South2North)
-  override val block = Some(South2East)
+  override val other = Some(South2East)
   override val right = Light.amber
 }
 

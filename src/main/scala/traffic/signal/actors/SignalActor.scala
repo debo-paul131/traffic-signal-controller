@@ -24,12 +24,12 @@ class SignalActor(lightState: LightState) extends Actor {
 
       for {
         oppositeLightState <- lightState.opposite
-        blockLightState <- lightState.block
-        nextblockLightState <- blockLightState.opposite
+        otherLightState <- lightState.other
+        nextOtherLightState <- otherLightState.opposite
       } yield {
         signals = Array(Utils.getColoredSignals(lightState), Utils.getColoredSignals(oppositeLightState),
-          Signal(blockLightState.name, blockLightState.left, Light.red, Light.red),
-          Signal(nextblockLightState.name, nextblockLightState.left, Light.red, Light.red))
+          Signal(otherLightState.name, otherLightState.left, Light.red, Light.red),
+          Signal(nextOtherLightState.name, nextOtherLightState.left, Light.red, Light.red))
       }
 
       signals.map { signal =>

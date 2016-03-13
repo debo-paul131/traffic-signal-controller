@@ -1,6 +1,7 @@
 package traffic.signal.actors
 
 import akka.actor._
+import akka.actor.SupervisorStrategy._
 import traffic.signal.models._
 import traffic.signal.actors._
 import traffic.signal.util._
@@ -9,6 +10,11 @@ import java.lang.System.currentTimeMillis
 import traffic.signal.control.ExecutionContexts.actorExecutionContext
 
 class SignalControlerActor(greenTime: FiniteDuration, startPhase: LightState) extends Actor {
+
+  override val supervisorStrategy =
+    OneForOneStrategy(maxNrOfRetries = 1) {
+      case _: Exception => Stop
+    }
 
   var phaseDelay = 0.seconds
   var currentPhase: LightState = startPhase
